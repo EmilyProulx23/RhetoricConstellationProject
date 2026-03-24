@@ -1,132 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recovering Peitho</title>
-    <style>
-        * { box-sizing: border-box; }
-        
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            /* Matches the deep blue-black of your image's void */
-            background-color: #00000000 !important; 
-            font-family: 'Georgia', serif;
-            color: white;
-            overflow-x: hidden;
-        }
+<style>
+    * { box-sizing: border-box; }
+    
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        /* Match the deepest black/blue in your image */
+        background-color: #0000000 !important; 
+        font-family: 'Georgia', serif;
+        color: white;
+        overflow-x: hidden;
+    }
 
-        /* 1. This repeats the star field to fill the 'black bars' */
-        .bg-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('peitho-constellation.jpg') repeat;
-            background-size: contain; 
-            background-position: center;
-            z-index: -10;
-        }
+    /* THE FIX: No repeat, centered, with a fade mask */
+    .bg-layer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Center the image and don't let it repeat */
+        background: url('peitho-constellation.jpg') no-repeat center center;
+        background-size: contain; 
+        z-index: -10;
+    }
 
-        /* 2. This hides the 'seams' where the image repeats by fading the sides */
-        .vignette {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(1,1,5,0) 40%, rgba(1,1,5,1) 90%);
-            z-index: -5;
-        }
+    /* This creates the "Fade" so you don't see the image edges */
+    .vignette {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* This creates a 'hole' in the middle and turns solid black at the edges */
+        background: radial-gradient(circle at center, 
+            rgba(1, 1, 5, 0) 0%, 
+            rgba(1, 1, 5, 0) 40%, 
+            rgba(1, 1, 5, 1) 75%
+        );
+        z-index: -5;
+    }
 
-        .scroll-container {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-        }
+    .scroll-container {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+    }
 
-        h1 {
-            font-style: italic;
-            font-weight: normal;
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            text-shadow: 0 0 20px black;
-            margin-bottom: 30px;
-        }
+    h1 {
+        font-style: italic;
+        font-weight: normal;
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        text-shadow: 0 0 20px black;
+        margin-bottom: 20px;
+    }
 
-        .map {
-            position: relative;
-            width: 100%;
-            max-width: 600px; 
-            height: 600px;
-        }
+    .map {
+        position: relative;
+        width: 100%;
+        max-width: 600px; 
+        height: 600px;
+    }
 
-        .node {
-            position: absolute;
-            cursor: pointer;
-            text-align: center;
-            transform: translate(-50%, -50%);
-        }
+    .node {
+        position: absolute;
+        cursor: pointer;
+        text-align: center;
+        transform: translate(-50%, -50%);
+    }
 
-        .star {
-            width: 15px;
-            height: 15px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 15px white, 0 0 30px #aaddff;
-        }
+    .star {
+        width: 14px;
+        height: 14px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 15px white, 0 0 30px #aaddff;
+    }
 
-        .name {
-            display: block;
-            margin-top: 8px;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 5px black;
-        }
+    .name {
+        display: block;
+        margin-top: 8px;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-shadow: 2px 2px 5px black;
+    }
 
-        /* Adjusted positions for the centered Goddess */
-        #n1 { top: 15%; left: 32%; } /* Crown */
-        #n2 { top: 32%; left: 38%; } /* Heart */
-        #n3 { top: 25%; left: 18%; } /* Hand */
-        #n4 { top: 85%; left: 45%; } /* Feet */
+    /* Alignment for centered goddess */
+    #n1 { top: 15%; left: 32%; } /* Crown */
+    #n2 { top: 32%; left: 38%; } /* Heart */
+    #n3 { top: 25%; left: 18%; } /* Hand */
+    #n4 { top: 85%; left: 45%; } /* Feet */
 
-        #panel {
-            max-width: 550px;
-            margin-top: 40px;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            display: none;
-            text-align: left;
-        }
-    </style>
-</head>
+    #panel {
+        max-width: 550px;
+        margin-top: 40px;
+        padding: 30px;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 15px;
+        display: none;
+        text-align: left;
+    }
+</style>
+
 <body>
-
     <div class="bg-layer"></div>
     <div class="vignette"></div>
 
     <div class="scroll-container">
         <h1>Recovering Peitho</h1>
-        
         <div class="map">
             <div class="node" id="n1" onclick="openNode('logos')"><div class="star"></div><span class="name">Logos</span></div>
             <div class="node" id="n2" onclick="openNode('ethos')"><div class="star"></div><span class="name">Ethos</span></div>
             <div class="node" id="n3" onclick="openNode('invite')"><div class="star"></div><span class="name">Invitation</span></div>
             <div class="node" id="n4" onclick="openNode('kairos')"><div class="star"></div><span class="name">Kairos</span></div>
         </div>
-
         <div id="panel"></div>
     </div>
 
@@ -146,4 +142,3 @@
         }
     </script>
 </body>
-</html>
