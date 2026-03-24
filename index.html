@@ -6,208 +6,176 @@
     <title>The Peitho Constellation: A Rhetorical Recovery</title>
     <style>
         :root {
-            --bg-dark: #05050a;
-            --main-text: #e0e6ed;
-            --star-glow: #fffbe6;
-            --accent-glow: #f0abfc; /* Soft purple for the 'feminine' Peitho */
-            --tension-color: #ffd1a4;
+            --star-glow: #ffffff;
+            --accent-glow: #aaddff; 
+            --text-light: #eef2f5;
+            --tension-color: #ffcc99;
         }
 
         body {
             font-family: 'Georgia', serif;
-            color: var(--main-text);
+            color: var(--text-light);
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            /* Using a direct link to a star background so it works instantly */
-            background: var(--bg-dark) url('https://images.unsplash.com/photo-1506318137071-a8e063b4b519?q=80&w=2000') no-repeat center center fixed;
+            /* Using your uploaded image as the fixed background */
+            background: #05050a url('peitho-constellation.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
+        /* Dark overlay to ensure text is readable regardless of the image brightness */
+        .overlay {
+            background: rgba(0, 0, 0, 0.3);
+            min-height: 100vh;
+            width: 100%;
+        }
+
         .container {
-            padding: 5% 10%;
-            max-width: 1200px;
+            padding: 2% 5%;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
+            padding-top: 20px;
         }
 
         h1 { 
             font-weight: normal; 
             font-style: italic; 
-            font-size: clamp(2rem, 5vw, 3rem); 
-            text-shadow: 0 0 20px rgba(255,255,255,0.3);
-        }
-        
-        .intro {
-            max-width: 750px;
-            margin: 0 auto 4rem auto;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 2.8rem; 
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
         }
 
-        /* Interactive Map Area */
+        /* The Map Area - Sized to show her figure */
         .constellation-map {
             position: relative;
-            height: 450px;
+            height: 600px; /* Adjust based on where her figure sits in your view */
             width: 100%;
-            margin-bottom: 4rem;
-            /* If you get your transparent PNG working, uncomment the line below: */
-            /* background: url('peitho-constellation.png') no-repeat center center; */
-            /* background-size: contain; */
+            margin: 0 auto;
         }
 
         .concept-star {
             position: absolute;
             cursor: pointer;
-            text-align: center;
-            transition: all 0.4s ease;
-            z-index: 10;
+            z-index: 20;
+            transition: transform 0.3s ease;
         }
 
+        /* Glowing Pulse Effect for the Interactive Points */
         .star-point {
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
             background-color: var(--star-glow);
             border-radius: 50%;
-            margin: 0 auto 8px auto;
-            box-shadow: 0 0 10px var(--star-glow), 0 0 20px var(--star-glow);
+            box-shadow: 0 0 15px white, 0 0 30px var(--accent-glow);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 25px white, 0 0 45px var(--accent-glow); }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
         .star-label {
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            background: rgba(0,0,0,0.4);
-            padding: 2px 8px;
-            border-radius: 4px;
+            letter-spacing: 2px;
+            background: rgba(0,0,0,0.6);
+            padding: 4px 10px;
+            border-radius: 3px;
+            white-space: nowrap;
         }
 
-        .concept-star:hover .star-point {
-            background-color: var(--accent-glow);
-            transform: scale(1.5);
-            box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
-        }
+        /* COORDINATES: Adjust these % to place stars on the Goddess */
+        #star-isocrates    { top: 15%; left: 30%; } /* Near the Crown/Head */
+        #star-ethos        { top: 28%; left: 35%; } /* Near the Heart/Chest */
+        #star-invitational { top: 22%; left: 18%; } /* Near the outstreched hand/orb */
+        #star-kairos       { top: 80%; left: 42%; } /* Near the feet/movement */
 
-        /* ADJUST THESE POSITIONS TO MAP YOUR CONSTELLATION */
-        #star-isocrates    { top: 20%; left: 15%; }
-        #star-ethos        { top: 10%; left: 55%; }
-        #star-invitational { top: 60%; left: 45%; }
-        #star-kairos       { top: 40%; left: 80%; }
-
-        /* Content Display Box */
+        /* Content Box - Glassmorphism style */
         .content-display {
-            max-width: 800px;
-            margin: 0 auto 100px auto;
-            min-height: 250px;
-            padding: 2rem;
-            background: rgba(10, 10, 20, 0.7);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
+            background: rgba(10, 15, 30, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 40px auto 100px auto;
+            max-width: 800px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         .concept-details { display: none; }
-        .active-section { display: block; animation: floatUp 0.6s ease-out; }
+        .active { display: block; animation: fadeIn 0.8s ease; }
 
-        @keyframes floatUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .tension-insight {
-            font-size: 0.95rem;
+        .tension-note {
+            margin-top: 25px;
+            padding-left: 15px;
             border-left: 3px solid var(--tension-color);
-            padding-left: 1.2rem;
-            margin-top: 2rem;
+            font-style: italic;
             color: var(--tension-color);
         }
 
-        h2 { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        h2 { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Recovering Peitho</h1>
-        <p>A PhD Project in Constellating Rhetoric</p>
-    </header>
+<div class="overlay">
+    <div class="container">
+        <header>
+            <h1>Recovering Peitho</h1>
+            <p>Navigating the Dwelling Places of Rhetoric</p>
+        </header>
 
-    <div class="intro">
-        <p>This interactive constellation follows the arc from <strong>Peitho</strong> through interrelated concepts. By navigating this space, we enact an Isocratean and invitational logic: the move toward a dwelling place rather than a finished argument.</p>
-    </div>
+        <div class="constellation-map">
+            <div id="star-isocrates" class="concept-star" onclick="showContent('isocrates')">
+                <div class="star-point"></div>
+                <span class="star-label">Isocratean Logos</span>
+            </div>
 
-    <div class="constellation-map">
-        <div id="star-isocrates" class="concept-star" onclick="activateNode('info-isocrates')">
-            <div class="star-point"></div>
-            <div class="star-label">Isocrates</div>
-        </div>
-        
-        <div id="star-ethos" class="concept-star" onclick="activateNode('info-ethos')">
-            <div class="star-point"></div>
-            <div class="star-label">Ethos (Dwelling)</div>
-        </div>
-        
-        <div id="star-invitational" class="concept-star" onclick="activateNode('info-invitational')">
-            <div class="star-point"></div>
-            <div class="star-label">Invitational</div>
-        </div>
-        
-        <div id="star-kairos" class="concept-star" onclick="activateNode('info-kairos')">
-            <div class="star-point"></div>
-            <div class="star-label">Kairos</div>
-        </div>
-    </div>
+            <div id="star-ethos" class="concept-star" onclick="showContent('ethos')">
+                <div class="star-point"></div>
+                <span class="star-label">Ethos (Dwelling)</span>
+            </div>
 
-    <div class="content-display" id="content-box">
-        <div id="initial-msg" style="text-align: center; opacity: 0.7;">
-            <p>Click a star within the constellation to explore the inquiry.</p>
-        </div>
+            <div id="star-invitational" class="concept-star" onclick="showContent('invitational')">
+                <div class="star-point"></div>
+                <span class="star-label">Invitational</span>
+            </div>
 
-        <div id="info-isocrates" class="concept-details">
-            <h2>Isocratean Logoi</h2>
-            <p>Moving away from Aristotle’s forensic discipline, Isocrates suggests logos calls community into being. Peitho here is the energy of assembly.</p>
-            <div class="tension-insight">
-                <strong>Honoring Complexity:</strong> Isocrates’ "dwelling" was elite and exclusionary. We must avoid a progressive narrative that ignores his pan-Hellenic elitism.
+            <div id="star-kairos" class="concept-star" onclick="showContent('kairos')">
+                <div class="star-point"></div>
+                <span class="star-label">Kairos</span>
             </div>
         </div>
 
-        <div id="info-ethos" class="concept-details">
-            <h2>Ethos as Dwelling</h2>
-            <p>Ethos is not a tool for credibility, but a <em>dwelling place</em> (Hyde). Peitho becomes the atmosphere of this shared site.</p>
-        </div>
+        <div class="content-display" id="content-display">
+            <div id="placeholder" style="text-align:center; opacity: 0.6;">
+                <p>Seek out the points of light to explore the constellation.</p>
+            </div>
 
-        <div id="info-invitational" class="concept-details">
-            <h2>Invitational Rhetoric</h2>
-            <p>Foss & Griffin’s recovery of the listener's agency. A return to the 'feminine' instability of Peitho where outcomes are emergent.</p>
-        </div>
+            <div id="isocrates" class="concept-details">
+                <h2>Isocratean Logoi</h2>
+                <p>In this recovery, Logos is the constitutive force that calls community into being. Peitho is the energy that makes gathering possible.</p>
+                <div class="tension-note">
+                    <strong>Complexity Check:</strong> Isocrates' "invitation" was for the few, not the many. His dwelling place had walls.
+                </div>
+            </div>
 
-        <div id="info-kairos" class="concept-details">
-            <h2>Kairos & Epideictic</h2>
-            <p>The open question: How does the "right time" shift from a moment of persuasion to a moment of welcome?</p>
-        </div>
-    </div>
-</div>
+            <div id="ethos" class="concept-details">
+                <h2>Ethos as Dwelling</h2>
+                <p>Shifting from "credibility" to "site." We look at the space rhetoric creates for us to inhabit together.</p>
+            </div>
 
-<script>
-    function activateNode(id) {
-        document.querySelectorAll('.concept-details').forEach(d => d.classList.remove('active-section'));
-        document.getElementById('initial-msg').style.display = 'none';
-        document.getElementById(id).classList.add('active-section');
-        
-        // Smoothly bring the text into view
-        document.getElementById('content-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-</script>
-
-</body>
-</html>
+            <div id="invitational" class="concept-details">
+                <h2>Invitational Rhetoric</h2>
+                <p>Recovery of the feminine force of Peitho. It is an offering of perspective rather than a demand for compliance.</p
