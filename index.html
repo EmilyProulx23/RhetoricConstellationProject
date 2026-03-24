@@ -8,14 +8,13 @@
         body, html {
             margin: 0;
             padding: 0;
-            background-color: #00000000;
+            background: #05050a; /* Fallback color */
             font-family: 'Georgia', serif;
             color: white;
-            overflow-x: hidden;
         }
 
-        /* The goddess stays fixed in the back */
-        .hero-bg {
+        /* This fixes the image to the back and ensures it doesn't move */
+        .goddess-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -26,46 +25,41 @@
             z-index: -1;
         }
 
-        .container {
+        .main-content {
             position: relative;
+            z-index: 1;
             max-width: 800px;
             margin: 0 auto;
-            padding: 60px 20px;
-            z-index: 1;
+            padding: 50px 20px;
+            text-align: center;
         }
 
         h1 {
-            text-align: center;
             font-style: italic;
             font-weight: normal;
-            font-size: 3rem;
-            /* This shadow makes text readable over ANY background */
-            text-shadow: 0 0 10px black, 0 0 20px black;
+            font-size: 3.5rem;
+            text-shadow: 2px 2px 15px rgba(0,0,0,1);
+            margin-bottom: 20px;
         }
 
-        .intro-text {
-            /* NO background color here, just a thin border */
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 30px;
-            border-radius: 15px;
+        .intro {
             line-height: 1.8;
             font-size: 1.2rem;
-            text-shadow: 2px 2px 8px black;
-            margin-bottom: 40px;
-            /* Optional: very light tint just to help readability */
-            background: rgba(0,0,0,0.2); 
+            text-shadow: 2px 2px 8px rgba(0,0,0,1);
+            margin-bottom: 60px;
+            /* We removed the box entirely - just floating text */
         }
 
-        .constellation-area {
+        /* The clickable stars */
+        .map {
             position: relative;
             height: 500px;
             width: 100%;
         }
 
-        .node {
+        .star {
             position: absolute;
             cursor: pointer;
-            text-align: center;
         }
 
         .dot {
@@ -73,7 +67,8 @@
             height: 15px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 0 20px #aaddff;
+            box-shadow: 0 0 20px #fff, 0 0 40px #aaddff;
+            margin: 0 auto;
         }
 
         .label {
@@ -82,79 +77,76 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 2px 2px 5px black;
+            text-shadow: 2px 2px 4px black;
         }
 
-        /* Positions */
-        #node-1 { top: 15%; left: 33%; }
-        #node-2 { top: 25%; left: 45%; }
-        #node-3 { top: 22%; left: 15%; }
-        #node-4 { top: 80%; left: 45%; }
+        /* Star Placement */
+        #s1 { top: 15%; left: 33%; }
+        #s2 { top: 25%; left: 45%; }
+        #s3 { top: 22%; left: 15%; }
+        #s4 { top: 80%; left: 45%; }
 
-        .content-box {
-            margin-top: 50px;
+        /* The box that appears when you click */
+        #display-box {
+            margin-top: 40px;
             padding: 30px;
-            border-top: 1px solid rgba(255,255,255,0.5);
-            text-shadow: 2px 2px 10px black;
-            display: none;
-            /* Again, very light tint */
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.4); /* Very light see-through black */
             border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-shadow: 1px 1px 5px black;
+            display: none; 
+            text-align: left;
         }
 
-        .tension {
-            color: #ffd1a4;
-            margin-top: 20px;
-            font-style: italic;
-        }
+        .tension { color: #ffd1a4; margin-top: 15px; font-style: italic; }
     </style>
 </head>
 <body>
 
-    <div class="hero-bg"></div>
+    <div class="goddess-bg"></div>
 
-    <div class="container">
+    <div class="main-content">
         <h1>Recovering Peitho</h1>
         
-        <div class="intro-text">
+        <div class="intro">
             We move with Haskins away from Aristotle's objectified <em>to pithanon</em>. Instead, we navigate by <strong>Peitho</strong>: the ancient force that is unstable, gendered, seductive, and legitimate. Click the nodes to begin.
         </div>
 
-        <div class="constellation-area">
-            <div class="node" id="node-1" onclick="show('isocrates')">
+        <div class="map">
+            <div class="star" id="s1" onclick="reveal('isocrates')">
                 <div class="dot"></div>
                 <span class="label">Logos</span>
             </div>
-            <div class="node" id="node-2" onclick="show('ethos')">
+            <div class="star" id="s2" onclick="reveal('ethos')">
                 <div class="dot"></div>
                 <span class="label">Ethos</span>
             </div>
-            <div class="node" id="node-3" onclick="show('invitational')">
+            <div class="star" id="s3" onclick="reveal('invitational')">
                 <div class="dot"></div>
                 <span class="label">Invitation</span>
             </div>
-            <div class="node" id="node-4" onclick="show('kairos')">
+            <div class="star" id="s4" onclick="reveal('kairos')">
                 <div class="dot"></div>
                 <span class="label">Kairos</span>
             </div>
         </div>
 
-        <div id="display" class="content-box"></div>
+        <div id="display-box"></div>
     </div>
 
     <script>
-        const info = {
-            isocrates: "<strong>Isocratean Logoi:</strong> Moving from Aristotle’s forensic discipline, Isocrates suggests Logos calls community into being. <div class='tension'>Complexity: Isocrates’ 'dwelling' was elite and pan-Hellenic.</div>",
-            ethos: "<strong>Ethos as Dwelling:</strong> Shifting from ethos as 'credibility' to an open site where relation is paramount.",
-            invitational: "<strong>Invitational Rhetoric:</strong> Foss & Griffin’s framework enacts the 'feminine' instability of Peitho.",
-            kairos: "<strong>Kairos & Movement:</strong> How does the 'right time' shift when the goddess is moving toward the listener in welcome?"
+        const content = {
+            isocrates: "<h2>Isocratean Logoi</h2><p>Constitutive force that calls community into being. Peitho as the energy of assembly.</p><div class='tension'>Complexity: Isocrates’ 'dwelling' was elite and pan-Hellenic.</div>",
+            ethos: "<h2>Ethos as Dwelling</h2><p>Shifting from 'credibility' to an open site where relation is paramount.</p>",
+            invitational: "<h2>Invitational Rhetoric</h2><p>Foss & Griffin’s framework enacts the 'feminine' instability of Peitho.</p>",
+            kairos: "<h2>Kairos & Movement</h2><p>The 'right time' shifting from persuasion to welcome.</p>"
         };
 
-        function show(key) {
-            const el = document.getElementById('display');
-            el.style.display = 'block';
-            el.innerHTML = info[key];
-            el.scrollIntoView({ behavior: 'smooth' });
+        function reveal(key) {
+            const box = document.getElementById('display-box');
+            box.style.display = 'block';
+            box.innerHTML = content[key];
+            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     </script>
 </body>
