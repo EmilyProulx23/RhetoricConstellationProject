@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recovering Peitho</title>
     <style>
-        /* This kills any theme-injected backgrounds */
+        * { box-sizing: border-box; }
+        
         html, body {
-            margin: 0 !important;
-            padding: 0 !important;
-            background: #010105 !important; /* Match your image's dark void */
-            color: white;
-            height: 100%;
+            margin: 0;
+            padding: 0;
             width: 100%;
+            height: 100%;
+            /* This color matches the deep blue-black of your star field */
+            background-color: #010105; 
+            font-family: 'Georgia', serif;
+            color: white;
             overflow-x: hidden;
         }
 
@@ -22,14 +25,29 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('peitho-constellation.jpg') no-repeat center center;
+            /* 'repeat' extends the stars to the sides; 'contain' keeps the Goddess from being huge */
+            background: url('peitho-constellation.jpg') repeat;
             background-size: contain; 
-            z-index: 1; /* Move to front of the body, but behind content */
+            background-position: center;
+            z-index: -10;
         }
 
-        .content-layer {
+        /* This creates a soft fade so you don't see the "seams" where the image repeats */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(1,1,5,0) 30%, rgba(1,1,5,1) 85%);
+            z-index: -5;
+        }
+
+        .scroll-container {
             position: relative;
-            z-index: 10;
+            z-index: 1;
+            width: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -37,90 +55,94 @@
         }
 
         h1 {
-            font-family: 'Georgia', serif;
             font-style: italic;
+            font-weight: normal;
             font-size: clamp(2rem, 8vw, 3.5rem);
             text-shadow: 0 0 20px black;
+            margin-bottom: 50px;
         }
 
-        .map-container {
+        .map {
             position: relative;
             width: 100%;
-            max-width: 600px;
-            height: 600px; /* Adjust this if the dots are too high/low */
+            max-width: 600px; 
+            height: 600px;
         }
 
-        .star-node {
+        .node {
             position: absolute;
             cursor: pointer;
+            text-align: center;
             transform: translate(-50%, -50%);
         }
 
-        .dot {
-            width: 14px;
-            height: 14px;
+        .star {
+            width: 15px;
+            height: 15px;
             background: white;
             border-radius: 50%;
             box-shadow: 0 0 15px white, 0 0 30px #aaddff;
         }
 
-        .label {
+        .name {
             display: block;
-            margin-top: 10px;
+            margin-top: 8px;
             font-size: 0.75rem;
-            text-transform: uppercase;
             letter-spacing: 2px;
+            text-transform: uppercase;
             text-shadow: 2px 2px 5px black;
         }
 
-        /* Positions for 'Contain' scaling */
-        #logos  { top: 15%; left: 32%; }
-        #ethos  { top: 32%; left: 38%; }
-        #invite { top: 25%; left: 18%; }
-        #kairos { top: 85%; left: 45%; }
+        /* Star positions for the centered goddess */
+        #n1 { top: 15%; left: 32%; } 
+        #n2 { top: 32%; left: 38%; } 
+        #n3 { top: 25%; left: 18%; } 
+        #n4 { top: 85%; left: 45%; }
 
-        #info-box {
-            max-width: 500px;
-            background: rgba(0,0,0,0.6);
+        #panel {
+            max-width: 550px;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(8px);
-            padding: 25px;
-            border-radius: 15px;
             border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
             display: none;
-            margin-top: 20px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
 
     <div class="bg-layer"></div>
+    <div class="vignette"></div>
 
-    <div class="content-layer">
+    <div class="scroll-container">
         <h1>Recovering Peitho</h1>
         
-        <div class="map-container">
-            <div class="star-node" id="logos" onclick="show('logos')"><div class="dot"></div><span class="label">Logos</span></div>
-            <div class="star-node" id="ethos" onclick="show('ethos')"><div class="dot"></div><span class="label">Ethos</span></div>
-            <div class="star-node" id="invite" onclick="show('invite')"><div class="dot"></div><span class="label">Invitation</span></div>
-            <div class="star-node" id="kairos" onclick="show('kairos')"><div class="dot"></div><span class="label">Kairos</span></div>
+        <div class="map">
+            <div class="node" id="n1" onclick="openNode('logos')"><div class="star"></div><span class="name">Logos</span></div>
+            <div class="node" id="n2" onclick="openNode('ethos')"><div class="star"></div><span class="name">Ethos</span></div>
+            <div class="node" id="n3" onclick="openNode('invite')"><div class="star"></div><span class="name">Invitation</span></div>
+            <div class="node" id="n4" onclick="openNode('kairos')"><div class="star"></div><span class="name">Kairos</span></div>
         </div>
 
-        <div id="info-box"></div>
+        <div id="panel"></div>
     </div>
 
     <script>
-        const data = {
-            logos: "<h3>Isocratean Logoi</h3><p>Energy of assembly calling community into being.</p>",
+        const info = {
+            logos: "<h3>Isocratean Logoi</h3><p>The energy of assembly that calls community into being.</p>",
             ethos: "<h3>Ethos as Dwelling</h3><p>An open site where relation is the priority.</p>",
             invite: "<h3>Invitational Rhetoric</h3><p>Offering perspective rather than demanding compliance.</p>",
             kairos: "<h3>Kairos & Movement</h3><p>The 'right time' as a moment of welcome.</p>"
         };
 
-        function show(key) {
-            const box = document.getElementById('info-box');
-            box.style.display = 'block';
-            box.innerHTML = data[key];
-            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        function openNode(k) {
+            const p = document.getElementById('panel');
+            p.style.display = 'block';
+            p.innerHTML = info[k];
+            p.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     </script>
 </body>
