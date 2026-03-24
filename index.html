@@ -3,26 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recovering Peitho: A Rhetorical Constellation</title>
+    <title>Recovering Peitho</title>
     <style>
-        :root {
-            --accent: #aaddff; /* A lighter blue glow for better contrast */
-            /* We make the glass much more transparent now (0.2 instead of 0.65) */
-            --glass: rgba(0, 0, 0, 0.2); 
-            --text-light: #f5f8fa;
-        }
-
         body, html {
             margin: 0;
             padding: 0;
-            height: 100%;
             background-color: #05050a;
             font-family: 'Georgia', serif;
-            color: var(--text-light);
+            color: white;
             overflow-x: hidden;
         }
 
-        /* The 'Hero' Full-Bleed Background */
+        /* The goddess stays fixed in the back */
         .hero-bg {
             position: fixed;
             top: 0;
@@ -31,84 +23,57 @@
             height: 100%;
             background: url('peitho-constellation.jpg') no-repeat center center;
             background-size: cover;
-            z-index: -2; /* Puts it at the very bottom */
-        }
-
-        /* Dark overlay to ensure text is readable regardless of the image brightness */
-        .page-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3); /* A soft blanket to improve contrast */
             z-index: -1;
         }
 
         .container {
             position: relative;
-            z-index: 1;
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 20px;
+            z-index: 1;
         }
 
-        header h1 {
+        h1 {
             text-align: center;
-            font-weight: normal;
             font-style: italic;
-            font-size: 3.2rem;
-            margin-bottom: 10px;
-            /* Stronger shadow for the title */
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+            font-weight: normal;
+            font-size: 3rem;
+            /* This shadow makes text readable over ANY background */
+            text-shadow: 0 0 10px black, 0 0 20px black;
         }
 
         .intro-text {
-            /* Much more transparent glass */
-            background: var(--glass);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            /* NO background color here, just a thin border */
+            border: 1px solid rgba(255,255,255,0.3);
             padding: 30px;
-            border-radius: 12px;
-            /* A softer border */
-            border: 1px solid rgba(255,255,255,0.08);
-            margin-bottom: 50px;
+            border-radius: 15px;
             line-height: 1.8;
-            font-size: 1.15rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            /* Add shadow to text itself for readability */
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 8px black;
+            margin-bottom: 40px;
+            /* Optional: very light tint just to help readability */
+            background: rgba(0,0,0,0.2); 
         }
 
-        /* Sizing the interactive area for her figure */
         .constellation-area {
             position: relative;
-            height: 550px;
+            height: 500px;
             width: 100%;
-            margin-bottom: 50px;
         }
 
         .node {
             position: absolute;
             cursor: pointer;
             text-align: center;
-            transition: all 0.3s ease;
         }
 
         .dot {
-            width: 14px;
-            height: 14px;
+            width: 15px;
+            height: 15px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 0 15px white, 0 0 30px var(--accent);
-            margin: 0 auto;
-            animation: pulse 3s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 20px white, 0 0 40px var(--accent); }
-            100% { transform: scale(1); opacity: 0.8; }
+            box-shadow: 0 0 20px #aaddff;
         }
 
         .label {
@@ -117,122 +82,79 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            background: rgba(0,0,0,0.6); /* Slightly darker background for the label itself */
-            padding: 4px 10px;
-            border-radius: 3px;
-            text-shadow: 1px 1px 2px black;
+            text-shadow: 2px 2px 5px black;
         }
 
-        .node:hover .dot {
-            transform: scale(1.4);
-            background: var(--accent);
-        }
-
-        /* ADJUST THESE % POSITIONS FOR PERFECT ALIGNMENT */
-        #node-isocrates    { top: 15%; left: 33%; } /* Near Crown/Head */
-        #node-ethos        { top: 25%; left: 45%; } /* Near Heart/Chest */
-        #node-invitational { top: 22%; left: 15%; } /* The Glowing Orb Hand */
-        #node-kairos       { top: 80%; left: 45%; } /* Near Feet/Movement */
+        /* Positions */
+        #node-1 { top: 15%; left: 33%; }
+        #node-2 { top: 25%; left: 45%; }
+        #node-3 { top: 22%; left: 15%; }
+        #node-4 { top: 80%; left: 45%; }
 
         .content-box {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.08);
-            min-height: 200px;
-            margin-bottom: 100px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            display: none; /* Hidden until click */
-            /* Add shadow to text itself for readability */
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            margin-top: 50px;
+            padding: 30px;
+            border-top: 1px solid rgba(255,255,255,0.5);
+            text-shadow: 2px 2px 10px black;
+            display: none;
+            /* Again, very light tint */
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
         }
 
-        h2 { border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 12px; }
-
-        .tension-insight {
-            margin-top: 25px;
-            border-left: 3px solid #ffd1a4;
-            padding-left: 18px;
+        .tension {
             color: #ffd1a4;
-            font-size: 0.98rem;
+            margin-top: 20px;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 
     <div class="hero-bg"></div>
-    <div class="page-overlay"></div> /* Adds a slight dark blanket over the image */
 
     <div class="container">
-        <header>
-            <h1>Recovering Peitho</h1>
-        </header>
-
+        <h1>Recovering Peitho</h1>
+        
         <div class="intro-text">
-            We move with Haskins away from Aristotle's objectified <em>to pithanon</em>. Instead, we navigate by <strong>Peitho</strong>: the ancient force that is unstable, gendered, seductive, and legitimate. This is not a linear history but a dynamic recovery. Click the glowing nodes to begin the inquiry.
+            We move with Haskins away from Aristotle's objectified <em>to pithanon</em>. Instead, we navigate by <strong>Peitho</strong>: the ancient force that is unstable, gendered, seductive, and legitimate. Click the nodes to begin.
         </div>
 
         <div class="constellation-area">
-            <div class="node" id="node-isocrates" onclick="showContent('isocrates')">
+            <div class="node" id="node-1" onclick="show('isocrates')">
                 <div class="dot"></div>
                 <span class="label">Logos</span>
             </div>
-            <div class="node" id="node-ethos" onclick="showContent('ethos')">
+            <div class="node" id="node-2" onclick="show('ethos')">
                 <div class="dot"></div>
-                <span class="label">Ethos (Dwelling)</span>
+                <span class="label">Ethos</span>
             </div>
-            <div class="node" id="node-invitational" onclick="showContent('invitational')">
+            <div class="node" id="node-3" onclick="show('invitational')">
                 <div class="dot"></div>
                 <span class="label">Invitation</span>
             </div>
-            <div class="node" id="node-kairos" onclick="showContent('kairos')">
+            <div class="node" id="node-4" onclick="show('kairos')">
                 <div class="dot"></div>
                 <span class="label">Kairos</span>
             </div>
         </div>
 
-        <div id="content-display" class="content-box">
-            </div>
+        <div id="display" class="content-box"></div>
     </div>
 
     <script>
-        const contentData = {
-            isocrates: {
-                title: "Isocratean Logoi",
-                text: "Moving from Aristotle’s forensic discipline, Isocrates suggests Logos calls community into being. Peitho here is the active energy of association.",
-                tension: "Complexity Check: Isocrates’ 'dwelling' was elite and pan-Hellenic, built on excluding the 'barbarian' other. This is a recovery of potential, not a perfect ideal."
-            },
-            ethos: {
-                title: "Ethos as a Dwelling Place",
-                text: "Shifting from ethos as 'credibility' (Hyde). We examine ethos as an open site or dwelling place where relation is paramount, not optimization.",
-                tension: ""
-            },
-            invitational: {
-                title: "Feminist Invitational Rhetoric",
-                text: "Foss & Griffin’s framework enacts the 'feminine' instability of Peitho. It rejects the intent to conquer, offering perspective rather than demanding compliance.",
-                tension: ""
-            },
-            kairos: {
-                title: "Kairos & Movement",
-                text: "This open point traces rhetoric in motion. How does the 'right time' (*kairos*) shift when the goddess is moving *toward* the listener in welcome?",
-                tension: ""
-            }
+        const info = {
+            isocrates: "<strong>Isocratean Logoi:</strong> Moving from Aristotle’s forensic discipline, Isocrates suggests Logos calls community into being. <div class='tension'>Complexity: Isocrates’ 'dwelling' was elite and pan-Hellenic.</div>",
+            ethos: "<strong>Ethos as Dwelling:</strong> Shifting from ethos as 'credibility' to an open site where relation is paramount.",
+            invitational: "<strong>Invitational Rhetoric:</strong> Foss & Griffin’s framework enacts the 'feminine' instability of Peitho.",
+            kairos: "<strong>Kairos & Movement:</strong> How does the 'right time' shift when the goddess is moving toward the listener in welcome?"
         };
 
-        function showContent(key) {
-            const display = document.getElementById('content-display');
-            const data = contentData[key];
-            
-            display.style.display = 'block';
-            display.innerHTML = `
-                <h2>${data.title}</h2>
-                <p>${data.text}</p>
-                ${data.tension ? `<div class="tension-insight"><strong>Note:</strong> ${data.tension}</div>` : ''}
-            `;
-            
-            display.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        function show(key) {
+            const el = document.getElementById('display');
+            el.style.display = 'block';
+            el.innerHTML = info[key];
+            el.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
