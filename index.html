@@ -5,157 +5,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recovering Peitho</title>
     <style>
-        /* This ensures the ENTIRE page allows the background to show through */
-        html, body {
+        /* 1. The ONLY place with a background is the body */
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
-            background-color: transparent; /* No more black filler */
+            /* This puts the image at the very bottom layer */
+            background: url('peitho-constellation.jpg') no-repeat center center fixed;
+            background-size: cover;
             font-family: 'Georgia', serif;
             color: white;
+            min-height: 100vh;
         }
 
-        /* The background image stays fixed and fills the screen */
-        .goddess-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* 2. Make the container completely invisible/clear */
+        .main-container {
             width: 100%;
-            height: 100%;
-            background: url('peitho-constellation.jpg') no-repeat center center;
-            background-size: cover;
-            z-index: -1;
-        }
-
-        /* The container for your text and stars - NO background color */
-        .main-wrapper {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            min-height: 100vh; /* Takes up at least the full screen */
-            background: transparent; /* Force transparency */
-        }
-
-        .content-inner {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
+            padding: 60px 20px;
+            background: transparent !important; /* Forces it to be clear */
         }
 
         h1 {
+            text-align: center;
             font-style: italic;
             font-weight: normal;
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            text-shadow: 2px 2px 15px rgba(0,0,0,1);
+            font-size: 3.5rem;
+            /* Shadow makes white text pop against the star image */
+            text-shadow: 0 0 15px black, 0 0 30px black;
             margin-top: 0;
         }
 
-        .intro {
+        .intro-text {
+            text-align: center;
             line-height: 1.8;
             font-size: 1.2rem;
-            text-shadow: 2px 2px 8px rgba(0,0,0,1);
-            margin-bottom: 30px;
+            text-shadow: 2px 2px 10px black;
+            margin-bottom: 50px;
+            background: transparent !important; /* No black box behind intro */
         }
 
-        .map-area {
+        /* 3. The Star Map Area */
+        .constellation-map {
             position: relative;
-            height: 500px; /* This is the space where the dots live */
+            height: 500px;
             width: 100%;
+            background: transparent !important;
         }
 
         .star-node {
             position: absolute;
             cursor: pointer;
+            text-align: center;
         }
 
-        .star-point {
-            width: 14px;
-            height: 14px;
+        .glow-dot {
+            width: 16px;
+            height: 16px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 0 15px white, 0 0 30px #aaddff;
+            box-shadow: 0 0 20px white, 0 0 40px #aaddff;
             margin: 0 auto;
         }
 
-        .star-label {
+        .star-name {
             display: block;
-            margin-top: 8px;
-            font-size: 0.75rem;
+            margin-top: 10px;
+            font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 2px 2px 4px black;
+            text-shadow: 2px 2px 5px black;
         }
 
-        /* Adjust these percentages to move dots over the image */
-        #logos   { top: 10%; left: 45%; }
-        #ethos   { top: 25%; left: 55%; }
-        #invite  { top: 20%; left: 25%; }
-        #kairos  { top: 75%; left: 48%; }
+        /* Adjusting positions based on your image */
+        #star-logos { top: 15%; left: 45%; }
+        #star-ethos { top: 30%; left: 55%; }
+        #star-invite { top: 22%; left: 20%; }
+        #star-kairos { top: 80%; left: 48%; }
 
-        #display-text {
+        /* 4. The Info Display - only a tiny bit of dark tint for reading */
+        #display-panel {
             margin-top: 40px;
-            padding: 25px;
-            background: rgba(0, 0, 0, 0.4); /* Very thin tint for readability */
+            padding: 30px;
+            /* This is a very light 'smoke' effect so you can still see the image through it */
+            background: rgba(0, 0, 0, 0.3); 
             backdrop-filter: blur(5px);
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: none;
             text-align: left;
-            text-shadow: 1px 1px 4px black;
+            text-shadow: 1px 1px 5px black;
         }
 
-        .tension { color: #ffd1a4; margin-top: 15px; font-style: italic; font-size: 0.95rem; }
+        .tension {
+            color: #ffd1a4;
+            margin-top: 20px;
+            font-style: italic;
+            border-left: 2px solid #ffd1a4;
+            padding-left: 15px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="goddess-bg"></div>
-
-    <div class="main-wrapper">
-        <div class="content-inner">
-            <h1>Recovering Peitho</h1>
-            
-            <div class="intro">
-                We move with Haskins away from Aristotle's objectified <em>to pithanon</em>. Instead, we navigate by <strong>Peitho</strong>: the ancient force that is unstable, gendered, seductive, and legitimate.
-            </div>
-
-            <div class="map-area">
-                <div class="star-node" id="logos" onclick="update('logos')">
-                    <div class="star-point"></div>
-                    <span class="star-label">Logos</span>
-                </div>
-                <div class="star-node" id="ethos" onclick="update('ethos')">
-                    <div class="star-point"></div>
-                    <span class="star-label">Ethos</span>
-                </div>
-                <div class="star-node" id="invite" onclick="update('invite')">
-                    <div class="star-point"></div>
-                    <span class="star-label">Invitation</span>
-                </div>
-                <div class="star-node" id="kairos" onclick="update('kairos')">
-                    <div class="star-point"></div>
-                    <span class="star-label">Kairos</span>
-                </div>
-            </div>
-
-            <div id="display-text"></div>
+    <div class="main-container">
+        <h1>Recovering Peitho</h1>
+        
+        <div class="intro-text">
+            Navigating the ancient force that is unstable, gendered, seductive, and legitimate. 
+            Click the glowing stars to trace the recovery.
         </div>
+
+        <div class="constellation-map">
+            <div class="star-node" id="star-logos" onclick="reveal('logos')">
+                <div class="glow-dot"></div>
+                <span class="star-name">Logos</span>
+            </div>
+            <div class="star-node" id="star-ethos" onclick="reveal('ethos')">
+                <div class="glow-dot"></div>
+                <span class="star-name">Ethos</span>
+            </div>
+            <div class="star-node" id="star-invite" onclick="reveal('invite')">
+                <div class="glow-dot"></div>
+                <span class="star-name">Invitation</span>
+            </div>
+            <div class="star-node" id="star-kairos" onclick="reveal('kairos')">
+                <div class="glow-dot"></div>
+                <span class="star-name">Kairos</span>
+            </div>
+        </div>
+
+        <div id="display-panel"></div>
     </div>
 
     <script>
-        const info = {
-            logos: "<h3>Isocratean Logoi</h3><p>Logos calls community into being. Peitho as the energy of assembly.</p><div class='tension'>Complexity: Isocrates’ 'dwelling' was elite and exclusionary.</div>",
-            ethos: "<h3>Ethos as Dwelling</h3><p>Shifting from ethos as 'credibility' to an open site where relation is paramount.</p>",
-            invite: "<h3>Invitational Rhetoric</h3><p>A recovery of the feminine instability of Peitho, offering perspective rather than demanding compliance.</p>",
-            kairos: "<h3>Kairos & Movement</h3><p>The 'right time' shifting from persuasion to a moment of welcome.</p>"
+        const contentMap = {
+            logos: "<h2>Isocratean Logoi</h2><p>Logos calls community into being. Peitho as the energy of assembly.</p><div class='tension'>Complexity: Isocrates’ 'dwelling' was elite and pan-Hellenic.</div>",
+            ethos: "<h2>Ethos as Dwelling</h2><p>Shifting from ethos as 'credibility' to an open site where relation is paramount.</p>",
+            invite: "<h2>Invitational Rhetoric</h2><p>A recovery of the feminine instability of Peitho, offering rather than demanding.</p>",
+            kairos: "<h2>Kairos & Movement</h2><p>The 'right time' shifting from persuasion to a moment of welcome.</p>"
         };
 
-        function update(key) {
-            const box = document.getElementById('display-text');
-            box.style.display = 'block';
-            box.innerHTML = info[key];
-            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        function reveal(key) {
+            const panel = document.getElementById('display-panel');
+            panel.style.display = 'block';
+            panel.innerHTML = contentMap[key];
+            panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     </script>
 </body>
