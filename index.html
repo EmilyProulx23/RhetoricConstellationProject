@@ -12,20 +12,22 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #05050a; /* Deep space black for the 'bars' on the side */
+            /* Matching the black exactly to your image edges */
+            background-color: #010105 !important; 
             font-family: 'Georgia', serif;
             color: white;
+            overflow-x: hidden;
         }
 
-        /* Fixed Background - Set to CONTAIN */
         .bg-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            /* This ensures the goddess is fully visible without being cut off */
             background: url('peitho-constellation.jpg') no-repeat center center;
-            background-size: contain; /* This shows the whole image */
+            background-size: contain; 
             z-index: -10;
         }
 
@@ -37,39 +39,39 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         h1 {
             font-style: italic;
             font-weight: normal;
-            font-size: clamp(1.8rem, 5vw, 3rem);
-            text-shadow: 0 0 15px black;
-            margin-top: 20px;
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            text-shadow: 0 0 20px black;
+            margin-bottom: 10px;
         }
 
         .intro {
-            max-width: 600px;
+            max-width: 650px;
             text-align: center;
-            line-height: 1.5;
-            text-shadow: 1px 1px 5px black;
-            margin: 10px 0 30px 0;
-            font-size: 1rem;
+            line-height: 1.6;
+            text-shadow: 2px 2px 10px black;
+            margin-bottom: 40px;
         }
 
-        /* Interactive Area */
+        /* This area is now INVISIBLE so the goddess shows through */
         .map {
             position: relative;
             width: 100%;
-            max-width: 600px; /* Narrower to match the 'contained' image width */
-            height: 70vh; /* Scaled to the viewport */
+            max-width: 600px; 
+            height: 600px;
+            background: transparent !important;
         }
 
         .node {
             position: absolute;
             cursor: pointer;
             text-align: center;
-            transform: translate(-50%, -50%); /* Centers the dot on the coordinate */
+            transform: translate(-50%, -50%);
         }
 
         .star {
@@ -77,35 +79,35 @@
             height: 14px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 0 10px white, 0 0 20px #aaddff;
+            box-shadow: 0 0 15px white, 0 0 30px #aaddff;
         }
 
         .name {
             display: block;
             margin-top: 8px;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 2px 2px 4px black;
-            white-space: nowrap;
+            text-shadow: 2px 2px 5px black;
         }
 
-        /* RE-MAPPED COORDINATES for the 'contained' image */
-        #n1 { top: 15%; left: 32%; } /* Crown/Logos */
-        #n2 { top: 35%; left: 38%; } /* Heart/Ethos */
-        #n3 { top: 25%; left: 18%; } /* Hand/Invitation */
-        #n4 { top: 85%; left: 45%; } /* Feet/Kairos */
+        /* Star positions adjusted for 'Contain' scale */
+        #n1 { top: 15%; left: 32%; } /* Crown */
+        #n2 { top: 32%; left: 38%; } /* Heart */
+        #n3 { top: 25%; left: 18%; } /* Hand */
+        #n4 { top: 85%; left: 45%; } /* Feet */
 
         #panel {
-            max-width: 500px;
-            margin: 20px 0 100px 0;
-            padding: 20px;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
+            max-width: 550px;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
             display: none;
             text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
     </style>
 </head>
@@ -115,7 +117,7 @@
 
     <div class="scroll-container">
         <h1>Recovering Peitho</h1>
-        <p class="intro">Navigating the rhetorical constellation of movement and invitation.</p>
+        <p class="intro">Click the glowing stars to navigate the dwelling places of rhetoric.</p>
 
         <div class="map">
             <div class="node" id="n1" onclick="openNode('logos')"><div class="star"></div><span class="name">Logos</span></div>
@@ -130,9 +132,9 @@
     <script>
         const info = {
             logos: "<h3>Isocratean Logoi</h3><p>The energy of assembly that calls community into being.</p>",
-            ethos: "<h3>Ethos as Dwelling</h3><p>An open site where relation is the priority over expertise.</p>",
+            ethos: "<h3>Ethos as Dwelling</h3><p>An open site where relation is the priority.</p>",
             invite: "<h3>Invitational Rhetoric</h3><p>Offering perspective rather than demanding compliance.</p>",
-            kairos: "<h3>Kairos & Movement</h3><p>The right time shifting from persuasion to a moment of welcome.</p>"
+            kairos: "<h3>Kairos & Movement</h3><p>The 'right time' shifting from persuasion to a moment of welcome.</p>"
         };
 
         function openNode(k) {
