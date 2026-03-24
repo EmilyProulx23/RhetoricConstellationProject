@@ -8,71 +8,58 @@
         * { box-sizing: border-box; }
         
         html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
             background-color: #0000000;
             font-family: 'Georgia', serif;
             color: white;
             overflow-x: hidden;
         }
 
-        /* LAYER 1: The "Extra Stars" on the sides */
-        .stars-extension {
+        /* LAYER 1: A wide, generic starfield to fill the screen */
+        .stars-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('peitho-constellation.jpg') repeat;
-            background-size: contain;
-            filter: blur(4px) brightness(0.4); /* Makes side stars subtle so they don't distract */
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png'), 
+                        radial-gradient(circle at center, #0a0a1a 0%, #010105 100%);
             z-index: -20;
         }
 
-        /* LAYER 2: The actual Goddess, centered and clear */
-        .goddess-main {
+        /* LAYER 2: Your Goddess, centered once, no repeats */
+        .goddess-layer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: url('peitho-constellation.jpg') no-repeat center center;
             background-size: contain;
             z-index: -10;
         }
 
-        /* LAYER 3: The Blend (Hides the 'edges' of the center image) */
-        .blend-mask {
+        /* LAYER 3: The Blend (Hides the 'box' edges of Peitho) */
+        .edge-softener {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* This fades the center goddess into the side stars seamlessly */
-            background: linear-gradient(to right, 
-                #010105 0%, 
-                transparent 25%, 
-                transparent 75%, 
-                #010105 100%);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at center, 
+                transparent 40%, 
+                rgba(1, 1, 5, 0.5) 60%, 
+                rgba(1, 1, 5, 1) 95%);
             z-index: -5;
         }
 
         .scroll-container {
             position: relative;
             z-index: 1;
-            width: 100%;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 40px 20px;
+            min-height: 100vh;
         }
 
         h1 {
-            font-style: italic;
-            font-weight: normal;
+            font-style: italic; font-weight: normal;
             font-size: clamp(2rem, 8vw, 3.5rem);
             text-shadow: 0 0 20px black;
             margin-bottom: 20px;
@@ -90,31 +77,28 @@
             cursor: pointer;
             text-align: center;
             transform: translate(-50%, -50%);
+            transition: transform 0.3s ease;
         }
+        .node:hover { transform: translate(-50%, -50%) scale(1.2); }
 
         .star-dot {
-            width: 12px;
-            height: 12px;
-            background: white;
-            border-radius: 50%;
+            width: 12px; height: 12px;
+            background: white; border-radius: 50%;
             box-shadow: 0 0 15px white, 0 0 30px #aaddff;
         }
 
         .label {
-            display: block;
-            margin-top: 8px;
-            font-size: 0.65rem;
-            letter-spacing: 2px;
+            display: block; margin-top: 8px;
+            font-size: 0.65rem; letter-spacing: 2px;
             text-transform: uppercase;
             text-shadow: 2px 2px 5px black;
-            white-space: nowrap;
         }
 
-        /* Dots aligned to her figure */
-        #n1 { top: 18%; left: 45%; } /* Logos */
-        #n2 { top: 38%; left: 48%; } /* Ethos */
-        #n3 { top: 28%; left: 16%; } /* Invitation */
-        #n4 { top: 82%; left: 45%; } /* Kairos */
+        /* Adjusted positions for the centered figure */
+        #n1 { top: 18.5%; left: 45%; } /* Logos */
+        #n2 { top: 38%; left: 48.5%; } /* Ethos */
+        #n3 { top: 28.5%; left: 16%; } /* Invitation */
+        #n4 { top: 82.5%; left: 46%; } /* Kairos */
 
         #panel {
             max-width: 550px;
@@ -130,9 +114,9 @@
 </head>
 <body>
 
-    <div class="stars-extension"></div>
-    <div class="goddess-main"></div>
-    <div class="blend-mask"></div>
+    <div class="stars-bg"></div>
+    <div class="goddess-layer"></div>
+    <div class="edge-softener"></div>
 
     <div class="scroll-container">
         <h1>Recovering Peitho</h1>
