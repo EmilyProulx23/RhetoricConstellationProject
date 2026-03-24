@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recovering Peitho</title>
     <style>
-        body, html {
+        /* This ensures the ENTIRE page allows the background to show through */
+        html, body {
             margin: 0;
             padding: 0;
-            background: #05050a; /* Fallback color */
+            height: 100%;
+            background-color: transparent; /* No more black filler */
             font-family: 'Georgia', serif;
             color: white;
         }
 
-        /* This fixes the image to the back and ensures it doesn't move */
+        /* The background image stays fixed and fills the screen */
         .goddess-bg {
             position: fixed;
             top: 0;
@@ -25,127 +27,134 @@
             z-index: -1;
         }
 
-        .main-content {
+        /* The container for your text and stars - NO background color */
+        .main-wrapper {
             position: relative;
             z-index: 1;
+            width: 100%;
+            min-height: 100vh; /* Takes up at least the full screen */
+            background: transparent; /* Force transparency */
+        }
+
+        .content-inner {
             max-width: 800px;
             margin: 0 auto;
-            padding: 50px 20px;
+            padding: 40px 20px;
             text-align: center;
         }
 
         h1 {
             font-style: italic;
             font-weight: normal;
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 8vw, 3.5rem);
             text-shadow: 2px 2px 15px rgba(0,0,0,1);
-            margin-bottom: 20px;
+            margin-top: 0;
         }
 
         .intro {
             line-height: 1.8;
             font-size: 1.2rem;
             text-shadow: 2px 2px 8px rgba(0,0,0,1);
-            margin-bottom: 60px;
-            /* We removed the box entirely - just floating text */
+            margin-bottom: 30px;
         }
 
-        /* The clickable stars */
-        .map {
+        .map-area {
             position: relative;
-            height: 500px;
+            height: 500px; /* This is the space where the dots live */
             width: 100%;
         }
 
-        .star {
+        .star-node {
             position: absolute;
             cursor: pointer;
         }
 
-        .dot {
-            width: 15px;
-            height: 15px;
+        .star-point {
+            width: 14px;
+            height: 14px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 0 20px #fff, 0 0 40px #aaddff;
+            box-shadow: 0 0 15px white, 0 0 30px #aaddff;
             margin: 0 auto;
         }
 
-        .label {
+        .star-label {
             display: block;
-            margin-top: 10px;
-            font-size: 0.8rem;
+            margin-top: 8px;
+            font-size: 0.75rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             text-shadow: 2px 2px 4px black;
         }
 
-        /* Star Placement */
-        #s1 { top: 15%; left: 33%; }
-        #s2 { top: 25%; left: 45%; }
-        #s3 { top: 22%; left: 15%; }
-        #s4 { top: 80%; left: 45%; }
+        /* Adjust these percentages to move dots over the image */
+        #logos   { top: 10%; left: 45%; }
+        #ethos   { top: 25%; left: 55%; }
+        #invite  { top: 20%; left: 25%; }
+        #kairos  { top: 75%; left: 48%; }
 
-        /* The box that appears when you click */
-        #display-box {
+        #display-text {
             margin-top: 40px;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.4); /* Very light see-through black */
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.4); /* Very thin tint for readability */
+            backdrop-filter: blur(5px);
             border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
-            text-shadow: 1px 1px 5px black;
-            display: none; 
+            border: 1px solid rgba(255,255,255,0.1);
+            display: none;
             text-align: left;
+            text-shadow: 1px 1px 4px black;
         }
 
-        .tension { color: #ffd1a4; margin-top: 15px; font-style: italic; }
+        .tension { color: #ffd1a4; margin-top: 15px; font-style: italic; font-size: 0.95rem; }
     </style>
 </head>
 <body>
 
     <div class="goddess-bg"></div>
 
-    <div class="main-content">
-        <h1>Recovering Peitho</h1>
-        
-        <div class="intro">
-            We move with Haskins away from Aristotle's objectified <em>to pithanon</em>. Instead, we navigate by <strong>Peitho</strong>: the ancient force that is unstable, gendered, seductive, and legitimate. Click the nodes to begin.
-        </div>
+    <div class="main-wrapper">
+        <div class="content-inner">
+            <h1>Recovering Peitho</h1>
+            
+            <div class="intro">
+                We move with Haskins away from Aristotle's objectified <em>to pithanon</em>. Instead, we navigate by <strong>Peitho</strong>: the ancient force that is unstable, gendered, seductive, and legitimate.
+            </div>
 
-        <div class="map">
-            <div class="star" id="s1" onclick="reveal('isocrates')">
-                <div class="dot"></div>
-                <span class="label">Logos</span>
+            <div class="map-area">
+                <div class="star-node" id="logos" onclick="update('logos')">
+                    <div class="star-point"></div>
+                    <span class="star-label">Logos</span>
+                </div>
+                <div class="star-node" id="ethos" onclick="update('ethos')">
+                    <div class="star-point"></div>
+                    <span class="star-label">Ethos</span>
+                </div>
+                <div class="star-node" id="invite" onclick="update('invite')">
+                    <div class="star-point"></div>
+                    <span class="star-label">Invitation</span>
+                </div>
+                <div class="star-node" id="kairos" onclick="update('kairos')">
+                    <div class="star-point"></div>
+                    <span class="star-label">Kairos</span>
+                </div>
             </div>
-            <div class="star" id="s2" onclick="reveal('ethos')">
-                <div class="dot"></div>
-                <span class="label">Ethos</span>
-            </div>
-            <div class="star" id="s3" onclick="reveal('invitational')">
-                <div class="dot"></div>
-                <span class="label">Invitation</span>
-            </div>
-            <div class="star" id="s4" onclick="reveal('kairos')">
-                <div class="dot"></div>
-                <span class="label">Kairos</span>
-            </div>
-        </div>
 
-        <div id="display-box"></div>
+            <div id="display-text"></div>
+        </div>
     </div>
 
     <script>
-        const content = {
-            isocrates: "<h2>Isocratean Logoi</h2><p>Constitutive force that calls community into being. Peitho as the energy of assembly.</p><div class='tension'>Complexity: Isocrates’ 'dwelling' was elite and pan-Hellenic.</div>",
-            ethos: "<h2>Ethos as Dwelling</h2><p>Shifting from 'credibility' to an open site where relation is paramount.</p>",
-            invitational: "<h2>Invitational Rhetoric</h2><p>Foss & Griffin’s framework enacts the 'feminine' instability of Peitho.</p>",
-            kairos: "<h2>Kairos & Movement</h2><p>The 'right time' shifting from persuasion to welcome.</p>"
+        const info = {
+            logos: "<h3>Isocratean Logoi</h3><p>Logos calls community into being. Peitho as the energy of assembly.</p><div class='tension'>Complexity: Isocrates’ 'dwelling' was elite and exclusionary.</div>",
+            ethos: "<h3>Ethos as Dwelling</h3><p>Shifting from ethos as 'credibility' to an open site where relation is paramount.</p>",
+            invite: "<h3>Invitational Rhetoric</h3><p>A recovery of the feminine instability of Peitho, offering perspective rather than demanding compliance.</p>",
+            kairos: "<h3>Kairos & Movement</h3><p>The 'right time' shifting from persuasion to a moment of welcome.</p>"
         };
 
-        function reveal(key) {
-            const box = document.getElementById('display-box');
+        function update(key) {
+            const box = document.getElementById('display-text');
             box.style.display = 'block';
-            box.innerHTML = content[key];
+            box.innerHTML = info[key];
             box.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     </script>
