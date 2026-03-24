@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recovering Peitho</title>
+    <title>Recovering Peitho: A Rhetorical Constellation</title>
     <style>
         :root {
-            --accent: #b3d9ff;
-            --glass: rgba(0, 0, 0, 0.65);
+            --accent: #aaddff; /* A lighter blue glow for better contrast */
+            /* We make the glass much more transparent now (0.2 instead of 0.65) */
+            --glass: rgba(0, 0, 0, 0.2); 
+            --text-light: #f5f8fa;
         }
 
         body, html {
@@ -16,11 +18,11 @@
             height: 100%;
             background-color: #05050a;
             font-family: 'Georgia', serif;
-            color: white;
+            color: var(--text-light);
             overflow-x: hidden;
         }
 
-        /* This makes the image cover the WHOLE background */
+        /* The 'Hero' Full-Bleed Background */
         .hero-bg {
             position: fixed;
             top: 0;
@@ -29,7 +31,18 @@
             height: 100%;
             background: url('peitho-constellation.jpg') no-repeat center center;
             background-size: cover;
-            z-index: -1; /* Puts it behind everything */
+            z-index: -2; /* Puts it at the very bottom */
+        }
+
+        /* Dark overlay to ensure text is readable regardless of the image brightness */
+        .page-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3); /* A soft blanket to improve contrast */
+            z-index: -1;
         }
 
         .container {
@@ -44,26 +57,33 @@
             text-align: center;
             font-weight: normal;
             font-style: italic;
-            font-size: 3rem;
+            font-size: 3.2rem;
             margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(0,0,0,0.9);
+            /* Stronger shadow for the title */
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
         }
 
         .intro-text {
+            /* Much more transparent glass */
             background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 25px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 30px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+            /* A softer border */
+            border: 1px solid rgba(255,255,255,0.08);
             margin-bottom: 50px;
             line-height: 1.8;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            /* Add shadow to text itself for readability */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
         }
 
-        /* Positioning the constellation points directly on her */
+        /* Sizing the interactive area for her figure */
         .constellation-area {
             position: relative;
-            height: 500px;
+            height: 550px;
             width: 100%;
             margin-bottom: 50px;
         }
@@ -76,22 +96,31 @@
         }
 
         .dot {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             background: white;
             border-radius: 50%;
             box-shadow: 0 0 15px white, 0 0 30px var(--accent);
             margin: 0 auto;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 20px white, 0 0 40px var(--accent); }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
         .label {
             display: block;
-            margin-top: 8px;
-            font-size: 0.75rem;
+            margin-top: 10px;
+            font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 2px 2px 4px black;
-            opacity: 0.8;
+            background: rgba(0,0,0,0.6); /* Slightly darker background for the label itself */
+            padding: 4px 10px;
+            border-radius: 3px;
+            text-shadow: 1px 1px 2px black;
         }
 
         .node:hover .dot {
@@ -99,35 +128,42 @@
             background: var(--accent);
         }
 
-        /* Adjusted positions for the goddess image */
-        #node1 { top: 15%; left: 33%; } /* Head area */
-        #node2 { top: 25%; left: 45%; } /* Chest area */
-        #node3 { top: 22%; left: 15%; } /* The glowing orb hand */
-        #node4 { top: 80%; left: 45%; } /* Feet/Movement */
+        /* ADJUST THESE % POSITIONS FOR PERFECT ALIGNMENT */
+        #node-isocrates    { top: 15%; left: 33%; } /* Near Crown/Head */
+        #node-ethos        { top: 25%; left: 45%; } /* Near Heart/Chest */
+        #node-invitational { top: 22%; left: 15%; } /* The Glowing Orb Hand */
+        #node-kairos       { top: 80%; left: 45%; } /* Near Feet/Movement */
 
         .content-box {
             background: var(--glass);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 40px;
             border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.08);
             min-height: 200px;
             margin-bottom: 100px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: none; /* Hidden until click */
+            /* Add shadow to text itself for readability */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
         }
 
+        h2 { border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 12px; }
+
         .tension-insight {
-            margin-top: 20px;
+            margin-top: 25px;
             border-left: 3px solid #ffd1a4;
-            padding-left: 15px;
+            padding-left: 18px;
             color: #ffd1a4;
-            font-size: 0.95rem;
+            font-size: 0.98rem;
         }
     </style>
 </head>
 <body>
 
     <div class="hero-bg"></div>
+    <div class="page-overlay"></div> /* Adds a slight dark blanket over the image */
 
     <div class="container">
         <header>
@@ -135,23 +171,23 @@
         </header>
 
         <div class="intro-text">
-            We move with Haskins away from Aristotle's objectified <em>to pithanon</em>. Instead, we navigate by <strong>Peitho</strong>: the ancient force that is unstable, gendered, seductive, and legitimate. Click the nodes within the constellation to begin.
+            We move with Haskins away from Aristotle's objectified <em>to pithanon</em>. Instead, we navigate by <strong>Peitho</strong>: the ancient force that is unstable, gendered, seductive, and legitimate. This is not a linear history but a dynamic recovery. Click the glowing nodes to begin the inquiry.
         </div>
 
         <div class="constellation-area">
-            <div class="node" id="node1" onclick="showContent('isocrates')">
+            <div class="node" id="node-isocrates" onclick="showContent('isocrates')">
                 <div class="dot"></div>
                 <span class="label">Logos</span>
             </div>
-            <div class="node" id="node2" onclick="showContent('ethos')">
+            <div class="node" id="node-ethos" onclick="showContent('ethos')">
                 <div class="dot"></div>
-                <span class="label">Ethos</span>
+                <span class="label">Ethos (Dwelling)</span>
             </div>
-            <div class="node" id="node3" onclick="showContent('invitational')">
+            <div class="node" id="node-invitational" onclick="showContent('invitational')">
                 <div class="dot"></div>
                 <span class="label">Invitation</span>
             </div>
-            <div class="node" id="node4" onclick="showContent('kairos')">
+            <div class="node" id="node-kairos" onclick="showContent('kairos')">
                 <div class="dot"></div>
                 <span class="label">Kairos</span>
             </div>
@@ -162,38 +198,38 @@
     </div>
 
     <script>
-        const data = {
+        const contentData = {
             isocrates: {
                 title: "Isocratean Logoi",
-                text: "In this recovery, Logos is the constitutive force that calls community into being. Peitho is the energy that makes gathering possible.",
-                tension: "Complexity: Isocrates' 'invitation' was for the elite. His dwelling place had walls."
+                text: "Moving from Aristotle’s forensic discipline, Isocrates suggests Logos calls community into being. Peitho here is the active energy of association.",
+                tension: "Complexity Check: Isocrates’ 'dwelling' was elite and pan-Hellenic, built on excluding the 'barbarian' other. This is a recovery of potential, not a perfect ideal."
             },
             ethos: {
-                title: "Ethos as Dwelling",
-                text: "Shifting from 'credibility' to 'site.' We look at the space rhetoric creates for us to inhabit together.",
+                title: "Ethos as a Dwelling Place",
+                text: "Shifting from ethos as 'credibility' (Hyde). We examine ethos as an open site or dwelling place where relation is paramount, not optimization.",
                 tension: ""
             },
             invitational: {
-                title: "Invitational Rhetoric",
-                text: "A recovery of the feminine force of Peitho. It is an offering of perspective rather than a demand for compliance.",
+                title: "Feminist Invitational Rhetoric",
+                text: "Foss & Griffin’s framework enacts the 'feminine' instability of Peitho. It rejects the intent to conquer, offering perspective rather than demanding compliance.",
                 tension: ""
             },
             kairos: {
                 title: "Kairos & Movement",
-                text: "Rhetoric in motion. How does the 'right time' feel when persuasion is moving toward the listener rather than at them?",
+                text: "This open point traces rhetoric in motion. How does the 'right time' (*kairos*) shift when the goddess is moving *toward* the listener in welcome?",
                 tension: ""
             }
         };
 
         function showContent(key) {
             const display = document.getElementById('content-display');
-            const item = data[key];
+            const data = contentData[key];
             
             display.style.display = 'block';
             display.innerHTML = `
-                <h2>${item.title}</h2>
-                <p>${item.text}</p>
-                ${item.tension ? `<div class="tension-insight"><strong>Note:</strong> ${item.tension}</div>` : ''}
+                <h2>${data.title}</h2>
+                <p>${data.text}</p>
+                ${data.tension ? `<div class="tension-insight"><strong>Note:</strong> ${data.tension}</div>` : ''}
             `;
             
             display.scrollIntoView({ behavior: 'smooth', block: 'center' });
